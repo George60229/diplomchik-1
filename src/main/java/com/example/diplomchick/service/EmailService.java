@@ -23,7 +23,6 @@ public class EmailService {
 
             emailSender.send(message);
         } catch (MessagingException e) {
-            // Обработка ошибок отправки почты
             e.printStackTrace();
         }
     }
