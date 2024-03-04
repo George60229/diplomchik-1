@@ -1,17 +1,20 @@
 package com.example.diplomchick.controller;
 
+
+import com.example.diplomchick.dto.UserInfo;
 import com.example.diplomchick.service.EmailService;
 import com.example.diplomchick.service.GPSService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-@RestController
+@Controller
 public class EmailController {
     private final Map<String, Integer> savedValue = new HashMap<>();
 
@@ -21,26 +24,28 @@ public class EmailController {
     @Autowired
     private GPSService gpsService;
 
-    public EmailController() {
-    }
+
 
     @PostMapping("/checkAccess/{email}/{value}")
-    public boolean checkValue(@PathVariable String email, @PathVariable int value) {
+    public String checkValue(@PathVariable String email, @PathVariable int value) {
 
 
         if (savedValue.get(email) != null) {
 
             boolean result = savedValue.get(email) == value;
             savedValue.remove(email, value);
-            return result;
+            if (result) {
+                return "success";
+            }
+
         }
-        return false;
+        return "error";
     }
 
     @PostMapping("/sendEmail/{email}")
-    public String sendEmail(@PathVariable String email) {
+    public String sendEmail(@PathVariable String email, Model model) {
         Random random = new Random();
-        int value = random.nextInt(0, 100);
+        int value = random.nextInt(100000, 999999);
         String text = "\n" +
                 "Welcome to Our Website!\n" +
                 "\n" +
@@ -54,7 +59,12 @@ public class EmailController {
         savedValue.put(email, value);
 
         emailService.sendEmail(email, "Confirm your login", text);
+        model.addAttribute("email", email);
 
-        return gpsService.loadLocation();
+        UserInfo userInfo=gpsService.loadLocation();
+        model.addAttribute(userInfo);
+        return "map";
     }
+
+
 }

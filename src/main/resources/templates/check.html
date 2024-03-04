@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Проверка 2FA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    div {
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    form {
+      margin-top: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+      background-color: #4caf50;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    #firstMail{
+      display: none;
+    }
+    #map {
+      height: 400px;
+      width: 50%;
+    }
+    #first {
+      display: none;
+    }
+    #second {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<div>
+  <h2>Check your email and enter your code</h2>
+
+  <h1  id="firstMail" th:text="${email}"></h1>
+
+  <form id="accessForm" method="post">
+    <label for="verificationCode">Код:</label>
+    <input type="text" id="verificationCode" name="verificationCode" required minlength="6" maxlength="6">
+
+    <br>
+    <input type="submit" value="Check">
+  </form>
+
+  <script>
+    document.getElementById('accessForm').addEventListener('submit', function() {
+      var verificationCodeValue = document.getElementById('verificationCode').value;
+      this.action = "/checkAccess/" + document.getElementById("first").textContent +"/"+encodeURIComponent(verificationCodeValue);
+    });
+  </script>
+</div>
+<h1  id="first" th:text="${userInfo.getCoordinates().getLat()}"></h1>
+<h1 id="second" th:text="${userInfo.getCoordinates().getLon()}"></h1>
+<!-- Элемент для отображения карты -->
+<div id="map"></div>
+
+<!-- Подключение Leaflet JS и скрипт для отображения карты -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  function initMap() {
+    // Получение значений lon и lat из модели с помощью Thymeleaf
+    const lon1 =document.getElementById("first").textContent;
+    const lat1 = document.getElementById("second").textContent;
+
+    // Создание карты с использованием Leaflet
+    const map = L.map('map').setView([lon1, lat1], 10);
+
+    // Добавление слоя с картой OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Добавление маркера на город (опционально)
+    L.marker([lon1, lat1]).addTo(map);
+  }
+</script>
+
+<!-- Вызов функции инициализации карты -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    initMap();
+  });
+</script>
+</body>
+</html>

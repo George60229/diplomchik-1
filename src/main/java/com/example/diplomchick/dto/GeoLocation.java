@@ -15,5 +15,18 @@ public class GeoLocation {
     @JsonProperty("city")
     private String city;
 
+    @JsonProperty("lat")
+    private double latitude;
 
+    @JsonProperty("lon")
+    private double longitude;
+
+    @JsonProperty("query")
+    private String ip;
+
+    @JsonProperty("org")
+    private String organization;
+
+    @JsonProperty("as")
+    private String as;
 }
