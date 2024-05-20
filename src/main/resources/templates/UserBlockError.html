@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Success</title>
+    <title>Ошибка: Пользователь заблокирован</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,28 +15,22 @@
             height: 100vh;
         }
 
-        .container {
+        .error-container {
             text-align: center;
-            background-color: #fff;
-            border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        h1 {
-            color: #4caf50;
+        .error-title {
+            font-size: 24px;
+            color: #d9534f; /* красный цвет */
             margin-bottom: 20px;
-        }
-
-        p {
-            color: #333;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Welcome</h1>
-    <p>Its secret system</p>
+<div class="error-container">
+    <h1 class="error-title">User is blocked</h1>
+    <p>Your access is limited. Contact with admin to fix it</p>
 </div>
 </body>
 </html>

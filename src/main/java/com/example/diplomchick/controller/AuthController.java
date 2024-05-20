@@ -1,8 +1,7 @@
 package com.example.diplomchick.controller;
 
 import com.example.diplomchick.model.MyUser;
-
-import com.example.diplomchick.model.UserRepository;
+import com.example.diplomchick.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,19 +11,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class AuthController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
 
     @Autowired
-    public AuthController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
-
 
     @GetMapping("/login")
     public String showLoginForm() {
         return "login";
     }
+
+
 
     @GetMapping("/register")
     public String showRegisterForm() {
@@ -32,13 +32,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("user") MyUser user){
+    public String registerUser(@ModelAttribute("user") MyUser user) {
+        if (userService.isExist(user.getEmail())) {
+            return "user_exist_error";
+        }
 
-
-        userRepository.save(user);
-
-
-        return "register";
+        userService.createUser(user);
+        return "login";
     }
 
 }

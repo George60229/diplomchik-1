@@ -64,7 +64,7 @@
 <div>
     <h2>Enter to system</h2>
     <form id="loginForm" method="post">
-        <label for="email">Login:</label>
+        <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
 
         <label for="password">Password:</label>
@@ -77,6 +77,10 @@
     <script>
         document.getElementById('loginForm').addEventListener('submit', function() {
             var emailValue = document.getElementById('email').value;
+            var passwordValue = document.getElementById('password').value;
+            var formData = new FormData();
+            formData.append('password', passwordValue);
+
             this.action = "/sendEmail/" + encodeURIComponent(emailValue);
         });
     </script>

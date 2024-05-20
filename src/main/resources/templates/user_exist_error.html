@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Success</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,28 +16,28 @@
             height: 100vh;
         }
 
-        .container {
+        .error-container {
             text-align: center;
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        h1 {
-            color: #4caf50;
+        .error-message {
+            font-size: 24px;
+            color: #333;
             margin-bottom: 20px;
         }
 
-        p {
-            color: #333;
+        .error-image {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Welcome</h1>
-    <p>Its secret system</p>
+<div class="error-container">
+
+    <div class="error-message">User already exists</div>
+    <p>Please go back and try a different username.</p>
 </div>
 </body>
 </html>

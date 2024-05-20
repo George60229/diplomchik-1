@@ -20,7 +20,6 @@ public class EmailService {
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(text);
-
             emailSender.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();

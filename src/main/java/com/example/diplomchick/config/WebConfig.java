@@ -9,7 +9,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
-
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
@@ -18,4 +17,3 @@ public class WebConfig implements WebMvcConfigurer {
         registry.viewResolver(resolver);
     }
 }
-
