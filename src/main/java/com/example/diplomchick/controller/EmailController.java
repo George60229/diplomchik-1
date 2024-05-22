@@ -2,6 +2,7 @@ package com.example.diplomchick.controller;
 
 
 import com.example.diplomchick.model.UserInfo;
+import com.example.diplomchick.model.UserRepository;
 import com.example.diplomchick.service.EmailService;
 import com.example.diplomchick.service.GPSService;
 import com.example.diplomchick.service.UserService;
@@ -48,25 +49,21 @@ public class EmailController {
     @PostMapping("/sendEmail/{email}")
     public String sendEmail(@PathVariable String email, Model model, @RequestParam String password) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         String ip = "";
         if (authentication != null && authentication.getDetails() instanceof WebAuthenticationDetails) {
             WebAuthenticationDetails details = (WebAuthenticationDetails) authentication.getDetails();
             ip = details.getRemoteAddress();
         }
-
-        if (email.equals("admin@gmail.com") && password.equals("admin")) {
+        password = userService.getHashCode(password);
+        if (userService.isAdmin(email, password)) {
             return "redirect:/admin";
         }
-        password = userService.getHashCode(password);
         if (!userService.checkCredential(email, password)) {
             return "wrong_credential_error";
         }
         if (userService.checkBlock(email)) {
             return "UserBlockError";
         }
-
-
         Random random = new Random();
         int value = random.nextInt(100000, 999999);
         String text = "\n" +
@@ -82,8 +79,7 @@ public class EmailController {
         savedValue.put(email, value);
         emailService.sendEmail(email, "Confirm your login", text);
         model.addAttribute("email", email);
-        UserInfo userInfo = gpsService.loadLocation(ip);
-        userInfo.setEmail(email);
+        UserInfo userInfo = gpsService.loadLocation(ip, email);
         model.addAttribute(userInfo);
         return "map";
     }

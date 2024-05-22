@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,7 +25,7 @@ public class UserInfo {
     private String organization;
     private String asNumber;
 
-    private LocalDate date;
+    private LocalDateTime date;
 
     private String email;
 

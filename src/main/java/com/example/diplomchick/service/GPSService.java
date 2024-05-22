@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class GPSService {
@@ -27,7 +28,7 @@ public class GPSService {
     @Autowired
     CoordinatesRepository coordinatesRepository;
 
-    public UserInfo loadLocation(String ip) {
+    public UserInfo loadLocation(String ip, String email) {
 
         try {
             if (ip.equals("0:0:0:0:0:0:0:1")) {
@@ -50,13 +51,14 @@ public class GPSService {
             coordinates.setLatitude(geoLocation.getLatitude());
             coordinates.setLongitude(geoLocation.getLongitude());
             coordinatesRepository.save(coordinates);
-            userInfo.setDate(LocalDate.now());
+            userInfo.setDate(LocalDateTime.now().withNano(0));
             userInfo.setCoordinates(coordinates);
             userInfo.setIp(geoLocation.getIp());
             userInfo.setCity(geoLocation.getCity());
             userInfo.setCountry(geoLocation.getCountry());
             userInfo.setOrganization(geoLocation.getOrganization());
             userInfo.setAsNumber(geoLocation.getAsNumber());
+            userInfo.setEmail(email);
             userInfoRepository.save(userInfo);
             return userInfo;
         } catch (Exception e) {

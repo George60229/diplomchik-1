@@ -13,13 +13,7 @@ import java.util.Objects;
 public class UserService {
 
     @Autowired
-    SaltManager saltManager;
-
-    @Autowired
     UserRepository userRepository;
-
-    String salt = BCrypt.gensalt();
-
 
     public boolean isExist(String email) {
         MyUser user = getByEmail(email);
@@ -45,11 +39,16 @@ public class UserService {
         return user.getPassword().equals(password);
     }
 
+    public boolean isAdmin(String email, String password) {
+        if (email.equals("admin@gmail.com")) {
+            return getByEmail(email).getPassword().equals(password);
+        }
+        return false;
+    }
 
     public boolean checkBlock(String email) {
         MyUser user = getByEmail(email);
         return user.isBlocked();
-
     }
 
     public String getHashCode(String password) {

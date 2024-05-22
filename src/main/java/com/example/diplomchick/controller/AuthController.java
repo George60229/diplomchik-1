@@ -13,7 +13,6 @@ public class AuthController {
 
     private final UserService userService;
 
-
     @Autowired
     public AuthController(UserService userService) {
         this.userService = userService;
@@ -23,8 +22,6 @@ public class AuthController {
     public String showLoginForm() {
         return "login";
     }
-
-
 
     @GetMapping("/register")
     public String showRegisterForm() {
@@ -36,7 +33,6 @@ public class AuthController {
         if (userService.isExist(user.getEmail())) {
             return "user_exist_error";
         }
-
         userService.createUser(user);
         return "login";
     }
