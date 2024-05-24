@@ -21,6 +21,7 @@
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
         }
 
         h1 {
@@ -31,13 +32,77 @@
         p {
             color: #333;
         }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .btn.logout-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .btn.logout-btn:hover {
+            background-color: #e53935;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Welcome</h1>
-    <p>Its secret system</p>
+    <p>It's a secret system</p>
+    <p>Email: <span th:text="${email}">[email]</span></p>
+
+    <!-- Форма для смены пароля -->
+    <form action="/changePassword" method="post">
+        <div class="form-group">
+            <label for="newPassword">New Password:</label>
+            <input type="password" id="newPassword" name="newPassword" required>
+        </div>
+        <!-- Скрытое поле для передачи email -->
+        <input type="hidden" id="email" name="email" th:value="${email}">
+
+        <button type="submit">Change Password</button>
+    </form>
+
     <a href="/" class="btn logout-btn">Logout</a>
 </div>
 </body>
 </html>
+
+

@@ -1,17 +1,27 @@
 package com.example.diplomchick.security;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Base64;
+
 @Component
-@PropertySource("classpath:application.properties")
 public class SaltManager {
 
-    public static String salt;
-
-    @Value("${salt}")
-    private void setSalt(String salt) {
-        SaltManager.salt = salt;
+    public static String generateSalt(int length) {
+        if (length <= 0) {
+            throw new IllegalArgumentException("Length must be a positive integer");
+        }
+        SecureRandom secureRandom;
+        try {
+            secureRandom = SecureRandom.getInstanceStrong();
+        } catch (NoSuchAlgorithmException e) {
+            secureRandom = new SecureRandom();
+        }
+        byte[] saltBytes = new byte[length];
+        secureRandom.nextBytes(saltBytes);
+        return Base64.getEncoder().encodeToString(saltBytes);
     }
+
 }

@@ -21,6 +21,7 @@ public class EmailService {
             helper.setSubject(subject);
             helper.setText(text);
             emailSender.send(message);
+
         } catch (MessagingException e) {
             e.printStackTrace();
         }

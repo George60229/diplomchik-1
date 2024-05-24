@@ -1,7 +1,7 @@
 package com.example.diplomchick.service;
 
-import com.example.diplomchick.model.Coordinates;
 import com.example.diplomchick.dto.GeoLocation;
+import com.example.diplomchick.model.Coordinates;
 import com.example.diplomchick.model.UserInfo;
 import com.example.diplomchick.repository.CoordinatesRepository;
 import com.example.diplomchick.repository.UserInfoRepository;
@@ -10,13 +10,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -34,7 +32,7 @@ public class GPSService {
             if (ip.equals("0:0:0:0:0:0:0:1")) {
                 ip = loadIP();
             }
-            URL url = new URL("http://ip-api.com/json/" + ip);// add here ip
+            URL url = new URL("http://ip-api.com/json/" + ip);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -66,7 +64,6 @@ public class GPSService {
         }
         return null;
     }
-
 
     public String loadIP() throws IOException {
         URL url = new URL("https://api64.ipify.org?format=json");

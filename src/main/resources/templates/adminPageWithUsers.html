@@ -47,40 +47,69 @@
             text-align: center;
         }
     </style>
+    <script>
+        function setSecretKey(formId) {
+            var secretKey = document.getElementById('secretKey').value;
+            var hiddenSecretKeyInput = document.getElementById(formId + '-hiddenSecretKey');
+            hiddenSecretKeyInput.value = secretKey;
+        }
+    </script>
 </head>
 <body>
-<h1>List of user</h1>
+<h1>List of users</h1>
+<!-- Поле для ввода секретного ключа -->
+
+
 <table>
     <thead>
     <tr>
         <th>Username</th>
         <th>Mail</th>
         <th>IsBlocked</th>
-        <th>Action</th> <!-- Добавляем новый столбец для действия -->
-        <!-- Другие поля, которые вы хотите вывести -->
+        <th>Action</th>
+        <th>Reason</th>
+        <th>Delete</th>
+        <th>Secret key</th><!-- Добавляем новый столбец для удаления -->
     </tr>
     </thead>
     <tbody>
     <!-- Пройдемся по списку пользователей и выведем информацию о каждом -->
-    <tr th:each="user : ${users}">
+    <tr th:each="user, iterStat : ${users}">
         <td th:text="${user.getUsername()}"></td>
         <td th:text="${user.getEmail()}"></td>
         <!-- Добавляем условный оператор для установки класса в зависимости от значения isBlocked -->
         <td th:class="${user.isBlocked() ? 'blocked' : 'active'}">
             <span th:text="${user.isBlocked() ? 'Blocked' : 'Active'}"></span>
         </td>
-        <!-- Добавляем чекбокс для блокировки пользователя -->
+
+        <!-- Добавляем форму для изменения блокировки пользователя -->
         <td>
-            <form th:action="@{/adminUsers}" method="post">
-                <!-- Передаем почту пользователя в качестве параметра запроса -->
+            <form th:action="@{/adminUsers}" method="post"
+                  onsubmit="setSecretKey('blockStatusForm-[[${iterStat.index}]]')">
                 <input type="hidden" name="gmail" th:value="${user.getEmail()}">
+                <input type="hidden" id="blockStatusForm-[[${iterStat.index}]]-hiddenSecretKey" name="secretKey">
                 <button type="submit">Change block status</button>
             </form>
+        </td>
+        <td th:text="${user.getReason()}"></td>
+        <td>
+            <form th:action="@{/delete}" method="post" onsubmit="setSecretKey('deleteForm-[[${iterStat.index}]]')">
+                <input type="hidden" name="gmail" th:value="${user.getEmail()}">
+                <input type="hidden" id="deleteForm-[[${iterStat.index}]]-hiddenSecretKey" name="secretKey">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+        <td>
+            <div class="secret-key-input">
+                <label for="secretKey">Secret Key:</label>
+                <input type="password" id="secretKey" name="secretKey" required>
+            </div>
         </td>
         <!-- Другие поля, если есть -->
     </tr>
     </tbody>
 </table>
+
 <!-- Форма для кнопки возврата -->
 <div class="return-button">
     <form th:action="@{/admin}" method="get">
@@ -89,6 +118,4 @@
 </div>
 </body>
 </html>
-
-
 

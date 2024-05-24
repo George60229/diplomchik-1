@@ -23,5 +23,9 @@ public class MyUser {
     private String email;
     private boolean isBlocked = false;
 
+    private String salt;
+
+    private String reason;
+
 }
 
