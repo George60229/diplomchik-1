@@ -15,13 +15,11 @@ public class EmailService {
     public void sendEmail(String to, String subject, String text) {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
-
         try {
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(text);
             emailSender.send(message);
-
         } catch (MessagingException e) {
             e.printStackTrace();
         }

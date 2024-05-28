@@ -106,6 +106,7 @@ public class UserService {
     @Transactional
     public void deleteUser(String email) {
         userRepository.deleteByEmail(email);
+        secretKeyRepository.deleteByUsername(email);
     }
 
     public void changePassword(String email, String newPassword) {
